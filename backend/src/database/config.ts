@@ -5,7 +5,7 @@ export default {
         port: process.env.DB_PORT || 3306,
         username: process.env.DB_USERNAME || 'root',
         password: process.env.DB_PASSWORD || 'root',
-        database: process.env.DB_DATABASE || 'educational_platform',
+        database: process.env.DB_DATABASE || 'flow_data_platform',
         logging: process.env.DB_LOGGING || true,
         autoLoadModels: process.env.DB_AUTO_LOAD_MODELS || true,
     },
