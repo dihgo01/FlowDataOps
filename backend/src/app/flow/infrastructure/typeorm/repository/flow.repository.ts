@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Flow } from '../entities/flow-typeorm.entity';
+import { FlowORMEntity } from '../entities/flow-typeorm.entity';
 import { IFlowRepository } from '../../../application/repositories/flow.repository';
 import { CreateFlowDto } from '../../../presenter/dto/create-flow.dto';
 import { UpdateFlowDto } from '../../../presenter/dto/update-flow.dto';
+import { Flow } from 'src/app/flow/application/entities/flow.entity';
 
 @Injectable()
 export class FlowRepository implements IFlowRepository {
   constructor(
-    @InjectRepository(Flow)
-    private readonly repository: Repository<Flow>,
+    @InjectRepository(FlowORMEntity)
+    private readonly repository: Repository<FlowORMEntity>,
   ) {}
 
   async create(data: CreateFlowDto): Promise<Flow> {
