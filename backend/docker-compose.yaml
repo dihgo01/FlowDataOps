@@ -7,8 +7,7 @@ services:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=educational_platform
-   
+      - MYSQL_DATABASE=flow_data_platform
 
     networks:
       - api-network
