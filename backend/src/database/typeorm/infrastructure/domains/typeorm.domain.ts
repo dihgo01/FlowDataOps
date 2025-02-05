@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { BaseEntity, DataSource } from 'typeorm';
 import { performance } from 'perf_hooks';
 
@@ -6,6 +7,8 @@ import { Repository, RepositoryHandler } from '../../infrastructure/types/reposi
 import { TransactionTypeormDomain } from './transaction-typeorm.domain';
 import { TransactionService } from '../../application/service/transaction.service';
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+
+const logger = new Logger('DataBase')
 
 export class TypeormDomain implements OnModuleInit, OnModuleDestroy {
 
@@ -25,12 +28,12 @@ export class TypeormDomain implements OnModuleInit, OnModuleDestroy {
     this.dataSource.initialize().then(async () => {
       this.isConnecting = false;
 
-      console.info('Connection with database was established', {
+      logger.log('Connection with database was established', {
         time_spent: `${performance.now() - start} ms`,
       });
 
       if (this.lazeQueries.length) {
-        console.info(`${this.lazeQueries.length} queries are waiting for connection`);
+        logger.log(`${this.lazeQueries.length} queries are waiting for connection`);
         for (const resolve of this.lazeQueries) resolve();
       }
     });
@@ -40,7 +43,7 @@ export class TypeormDomain implements OnModuleInit, OnModuleDestroy {
     const stage = process.env.NODE_ENV === 'test' ? 'test' : 'default';
     const dataSource = new DataSource(TypeormConfig.getOptions(stage));
 
-    console.info('Typeorm datasource created', { stage });
+    logger.log('Typeorm datasource created', { stage });
     return new TypeormDomain(dataSource);
   }
 
@@ -56,19 +59,19 @@ export class TypeormDomain implements OnModuleInit, OnModuleDestroy {
   async onModuleDestroy() {
     if (this.dataSource.isInitialized) {
       await this.dataSource.destroy();
-      console.info('Database connection closed');
+      logger.log('Database connection closed');
     }
   }
 
   public async connect(): Promise<void> {
     if (this.dataSource.isInitialized && !this.isConnecting) {
-      console.info('Database connection already been established');
+      logger.log('Database connection already been established');
       return;
     }
 
     if (this.isConnecting) {
       return new Promise<void>(resolve => {
-        console.info('Database is connecting');
+        logger.log('Database is connecting');
         this.lazeQueries.push(resolve);
       });
     }
@@ -81,7 +84,7 @@ export class TypeormDomain implements OnModuleInit, OnModuleDestroy {
 
   public async disconnect(): Promise<void> {
     if (!this.dataSource.isInitialized) {
-      console.info("Database don't have connection established");
+      logger.log("Database don't have connection established");
       return;
     }
 

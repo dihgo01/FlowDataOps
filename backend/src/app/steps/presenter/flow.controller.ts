@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { FlowService } from '../application/service/flow.service';
-import { CreateFlowDto } from './dto/create-flow.dto';
-import { UpdateFlowDto } from './dto/update-flow.dto';
+import { CreateFlowDto } from './dto/create-step.dto';
+import { UpdateFlowDto } from './dto/update-step.dto';
 
 @Controller('flow')
 export class FlowController {
-  constructor(private readonly flowService: FlowService) { }
+  constructor(private readonly flowService: FlowService) {}
 
   @Post()
   async create(@Body() createFlowDto: CreateFlowDto) {
@@ -13,11 +13,8 @@ export class FlowController {
   }
 
   @Get()
-  @Param('page')
-  @Param('limit')
-  @Param('flowName')
-  async findAll(page: number, limit: number, flowName?: string) {
-    return this.flowService.findAll(page, limit, flowName);
+  async findAll() {
+    return this.flowService.findAll();
   }
 
   @Get(':id')

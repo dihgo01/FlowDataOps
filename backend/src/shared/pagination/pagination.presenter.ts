@@ -5,6 +5,7 @@ export type PaginationPresenterProps = {
   per_page: number;
   last_page: number;
   total: number;
+  data: any[];
 };
 
 export class PaginationPresenter {
@@ -16,11 +17,13 @@ export class PaginationPresenter {
   last_page: number;
   @Transform(({ value }) => parseInt(value))
   total: number;
+  data: any[];
 
   constructor(props: PaginationPresenterProps) {
     this.current_page = props.current_page;
     this.per_page = props.per_page;
     this.last_page = props.last_page;
     this.total = props.total;
+    this.data = props.data;
   }
 }

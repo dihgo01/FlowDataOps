@@ -1,21 +1,21 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IFlowRepository } from '../repositories/flow.repository';
-import { CreateFlowDto } from '../../presenter/dto/create-flow.dto';
-import { UpdateFlowDto } from '../../presenter/dto/update-flow.dto';
+import { IFlowRepository } from '../repositories/step.repository';
+import { CreateFlowDto } from '../../presenter/dto/create-step.dto';
+import { UpdateFlowDto } from '../../presenter/dto/update-step.dto';
 
 @Injectable()
 export class FlowService {
   constructor(
     @Inject('IFlowRepository')
     private readonly flowRepository: IFlowRepository,
-  ) { }
+  ) {}
 
   async create(createFlowDto: CreateFlowDto) {
     return await this.flowRepository.create(createFlowDto);
   }
 
-  async findAll(page: number, limit: number, flowName?: string) {
-    return await this.flowRepository.findAll(page, limit, flowName);
+  async findAll() {
+    return await this.flowRepository.findAll();
   }
 
   async findOne(id: number) {

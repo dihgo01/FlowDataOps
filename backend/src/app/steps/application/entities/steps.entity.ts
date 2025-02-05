@@ -1,12 +1,14 @@
-export class Flow {
+export class Step {
     id?: number;
-    flowName!: string;
+    stepName!: string;
     description?: string;
+    type!: string;
+    icon!: string;
     createdAt!: Date;
     updatedAt!: Date;
     deletedAt?: Date | null;
 
-    constructor(target: Flow) {
+    constructor(target: Step) {
         Object.assign(this, target);
     }
 }

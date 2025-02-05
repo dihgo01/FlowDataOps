@@ -64,11 +64,8 @@ export class TypeormConfig {
           __dirname,
           '..',
           '..',
-          'modules',
           'database',
-          'infrastructure',
           'typeorm',
-          'infrastructure',
           'migrations',
           '**',
           '*.{ts,js}'
