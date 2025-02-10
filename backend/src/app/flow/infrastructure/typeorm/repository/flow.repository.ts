@@ -21,15 +21,17 @@ export class FlowRepository implements IFlowRepository {
   }
 
   async findAll(page: number, limit: number, flowName?: string): Promise<PaginationPresenter> {
-    const query = this.repository.createQueryBuilder('flow');
+    const query = await  this.repository.createQueryBuilder('flow')
+      .orderBy('flow_name', 'ASC')
+      .offset((page - 1) * limit)
+      .limit(limit);
 
     if (flowName) {
       query.where('flow.flowName LIKE :flowName', { flowName: `%${flowName}%` });
     }
-
-    query.skip((page - 1) * limit).take(limit);
-
-    const [data, count] = await query.getManyAndCount();
+    const count = await query.clone().getCount();
+    const data = await query.getMany();
+    console.log("DATA: ", data, "COUNT", count);
     return new PaginationPresenter({
       current_page: page,
       per_page: limit,

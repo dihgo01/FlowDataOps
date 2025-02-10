@@ -5,13 +5,14 @@ import { DatabaseProvider } from './database.providers';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FlowORMEntity } from 'src/app/flow/infrastructure/typeorm/entities/flow-typeorm.entity';
 import { TypeormConfig } from 'src/shared/config/typeorm.config';
+import { StepORMEntity } from 'src/app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: async () => TypeormConfig.getOptions('default'),
     }),
-    TypeOrmModule.forFeature([FlowORMEntity]),
+    TypeOrmModule.forFeature([FlowORMEntity, StepORMEntity]),
   ],
   providers: [
     DatabaseProvider,

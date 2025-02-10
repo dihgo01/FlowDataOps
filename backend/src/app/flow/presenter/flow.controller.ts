@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { FlowService } from '../application/service/flow.service';
 import { CreateFlowDto } from './dto/create-flow.dto';
 import { UpdateFlowDto } from './dto/update-flow.dto';
 
-@Controller('flow')
+@Controller('flows')
 export class FlowController {
   constructor(private readonly flowService: FlowService) { }
 
@@ -13,10 +13,7 @@ export class FlowController {
   }
 
   @Get()
-  @Param('page')
-  @Param('limit')
-  @Param('flowName')
-  async findAll(page: number, limit: number, flowName?: string) {
+  async findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('limit') flowName?: string) {
     return this.flowService.findAll(page, limit, flowName);
   }
 

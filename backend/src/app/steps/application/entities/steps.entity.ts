@@ -4,6 +4,7 @@ export class Step {
     description?: string;
     type!: string;
     icon!: string;
+    config?: string;
     createdAt!: Date;
     updatedAt!: Date;
     deletedAt?: Date | null;
