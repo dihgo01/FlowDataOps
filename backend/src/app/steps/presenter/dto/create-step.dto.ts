@@ -6,6 +6,18 @@ export class CreateStepDto {
     stepName!: string;
 
     @IsString()
+    @IsNotEmpty()
+    icon!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    type!: string;
+
+    @IsString()
+    @IsOptional()
+    config?: string;
+
+    @IsString()
     @IsOptional()
     description?: string;
 }

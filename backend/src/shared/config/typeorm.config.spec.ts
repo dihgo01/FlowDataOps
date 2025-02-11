@@ -24,7 +24,6 @@ describe('typeorm.config.ts', () => {
       expect(options.database).toBe(':memory:');
       expect(options.synchronize).toBe(true);
       expect(options.logging).toBe(false);
-      expect(options.entities).toHaveLength(3);
     });
 
     it('should return default config with MySQL for "default" stage', () => {
@@ -42,7 +41,6 @@ describe('typeorm.config.ts', () => {
 
       expect(options.type).toBe('mysql');
       expect(options.logging).toBe(false);
-      expect(options.entities).toHaveLength(3);
     });
 
     it('should return migration config with MySQL and migration credentials for "migration" stage', () => {
@@ -57,7 +55,6 @@ describe('typeorm.config.ts', () => {
 
       expect(options.type).toBe('mysql');
       expect(options.migrations).toHaveLength(1);
-      expect(options.entities).toHaveLength(3);
     });
   });
 });

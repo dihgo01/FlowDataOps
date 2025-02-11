@@ -3,10 +3,11 @@ import { DataSourceOptions, BaseEntity } from 'typeorm';
 import { resolve } from 'path';
 
 import { FlowORMEntity } from '../../app/flow/infrastructure/typeorm/entities/flow-typeorm.entity'
+import { StepORMEntity } from 'src/app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
 
 type Stage = 'test' | 'migration' | 'default';
 
-const entities: Array<typeof BaseEntity> = [FlowORMEntity];
+const entities: Array<typeof BaseEntity> = [FlowORMEntity,StepORMEntity];
 
 export class TypeormConfig {
 

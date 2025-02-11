@@ -1,27 +1,19 @@
 import { Module } from '@nestjs/common';
-import { TransactionService } from './typeorm/application/service/transaction.service';
-import { TransactionTypeormDomain } from './typeorm/infrastructure/domains/transaction-typeorm.domain';
-import { DatabaseProvider } from './database.providers';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FlowORMEntity } from '../app/flow/infrastructure/typeorm/entities/flow-typeorm.entity';
 import { TypeormConfig } from '../shared/config/typeorm.config';
 import { StepORMEntity } from '../app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
 
+const entities = [FlowORMEntity, StepORMEntity];
+const stage = process.env.NODE_ENV as 'test' | 'migration' | 'default' || 'default';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: async () => TypeormConfig.getOptions('default'),
+      useFactory: async () => TypeormConfig.getOptions(stage),
     }),
-    TypeOrmModule.forFeature([FlowORMEntity, StepORMEntity]),
+    TypeOrmModule.forFeature(entities),
   ],
-  providers: [
-    DatabaseProvider,
-    TransactionService,
-    {
-      provide: 'ITransactionDomain',
-      useClass: TransactionTypeormDomain,
-    },
-  ],
-  exports: [TransactionService, 'ITransactionDomain', DatabaseProvider, TypeOrmModule],
+  
+  exports: [ TypeOrmModule],
 })
 export class DatabaseModule { }

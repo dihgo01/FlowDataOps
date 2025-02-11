@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -104,7 +104,7 @@
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
 <a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -115,36 +115,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Step } from "src/app/steps/application/entities/steps.entity";
-<span class="cstat-no" title="statement not covered" >import {</span>
+import {
     BaseEntity,
     Column,
     CreateDateColumn,
@@ -155,33 +155,33 @@
 } from "typeorm";
 &nbsp;
 @Entity('steps')
-export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >StepORMEntity </span>extends BaseEntity implements Step {</span></span>
+export class StepORMEntity extends BaseEntity implements Step {
     @PrimaryGeneratedColumn('increment')
-    public <span class="cstat-no" title="statement not covered" >id!: number;</span>
+    public id!: number;
 &nbsp;
     @Column({ type: 'varchar', nullable: false })
-    public <span class="cstat-no" title="statement not covered" >stepName!: string;</span>
+    public stepName!: string;
 &nbsp;
     @Column({ type: 'varchar', nullable: true })
-    public <span class="cstat-no" title="statement not covered" >description?: string;</span>
+    public description?: string;
 &nbsp;
     @Column({ type: 'varchar', nullable: false })
-    public <span class="cstat-no" title="statement not covered" >type!: string;</span>
+    public type!: string;
 &nbsp;
     @Column({ type: 'varchar', nullable: false })
-    public <span class="cstat-no" title="statement not covered" >icon!: string;</span>
+    public icon!: string;
 &nbsp;
     @Column({ type: 'text', nullable: true })
-    public <span class="cstat-no" title="statement not covered" >config?: string;</span>
+    public config?: string;
 &nbsp;
     @CreateDateColumn()
-    public <span class="cstat-no" title="statement not covered" >createdAt!: Date;</span>
+    public createdAt!: Date;
 &nbsp;
     @UpdateDateColumn()
-    public <span class="cstat-no" title="statement not covered" >updatedAt!: Date;</span>
+    public updatedAt!: Date;
 &nbsp;
     @DeleteDateColumn()
-    public <span class="cstat-no" title="statement not covered" >deletedAt?: Date | null;</span>
+    public deletedAt?: Date | null;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -190,7 +190,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-10T18:40:59.061Z
+                at 2025-02-11T15:40:02.733Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

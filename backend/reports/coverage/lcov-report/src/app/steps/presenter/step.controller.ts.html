@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -98,39 +98,39 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
@@ -140,32 +140,32 @@ import { UpdateStepDto } from './dto/update-step.dto';
 &nbsp;
 @Controller('steps')
 export class StepController {
-<span class="fstat-no" title="function not covered" >  constructor(private readonly <span class="cstat-no" title="statement not covered" >s</span>tepService: S</span>tepService) { }
+  constructor(private readonly stepService: StepService) { }
 &nbsp;
   @Post()
-<span class="fstat-no" title="function not covered" >  async </span>create(@Body() createStepDto: CreateStepDto) {
-<span class="cstat-no" title="statement not covered" >    return this.stepService.create(createStepDto);</span>
+  async create(@Body() createStepDto: CreateStepDto) {
+    return this.stepService.create(createStepDto);
   }
 &nbsp;
   @Get()
-<span class="fstat-no" title="function not covered" >  async </span>findAll(
+  async findAll(
     @Query('page') page: number, @Query('limit') limit: number, @Query('stepName') stepName?: string) {
-<span class="cstat-no" title="statement not covered" >    return this.stepService.findAll(page, limit, stepName);</span>
+    return this.stepService.findAll(page, limit, stepName);
   }
 &nbsp;
   @Get(':id')
-<span class="fstat-no" title="function not covered" >  async </span>findOne(@Param('id') id: string) {
-<span class="cstat-no" title="statement not covered" >    return this.stepService.findOne(+id);</span>
+  async findOne(@Param('id') id: string) {
+    return this.stepService.findOne(+id);
   }
 &nbsp;
   @Patch(':id')
-<span class="fstat-no" title="function not covered" >  async </span>update(@Param('id') id: string, @Body() updateStepDto: UpdateStepDto) {
-<span class="cstat-no" title="statement not covered" >    return this.stepService.update(+id, updateStepDto);</span>
+  async update(@Param('id') id: string, @Body() updateStepDto: UpdateStepDto) {
+    return this.stepService.update(+id, updateStepDto);
   }
 &nbsp;
   @Delete(':id')
-<span class="fstat-no" title="function not covered" >  async </span>remove(@Param('id') id: string) {
-<span class="cstat-no" title="statement not covered" >    return this.stepService.remove(+id);</span>
+  async remove(@Param('id') id: string) {
+    return this.stepService.remove(+id);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -175,7 +175,7 @@ export class StepController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-10T18:40:59.061Z
+                at 2025-02-11T15:40:02.733Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
