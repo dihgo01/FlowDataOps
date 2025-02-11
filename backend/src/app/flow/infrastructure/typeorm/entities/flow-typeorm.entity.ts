@@ -19,8 +19,8 @@ export class FlowORMEntity extends BaseEntity implements Flow {
     @Column({ type: 'varchar', nullable: false })
     public flowName!: string;
 
-    //@Column({ type: 'text', nullable: true })
-    //public description?: string;
+    @Column({ type: 'text', nullable: true })
+    public description?: string;
 
     @CreateDateColumn()
     public createdAt!: Date;

@@ -8,14 +8,16 @@ export class StepService {
   constructor(
     @Inject('IStepRepository')
     private readonly stepRepository: IStepRepository,
-  ) {}
+  ) { }
 
   async create(createStepDto: CreateStepDto) {
     return await this.stepRepository.create(createStepDto);
   }
 
   async findAll(page: number, limit: number, stepName?: string) {
-    return await this.stepRepository.findAll(page, limit, stepName);
+    const pageDefault = page || 1;
+    const limitDefault = limit || 10;
+    return await this.stepRepository.findAll(pageDefault, limitDefault, stepName);
   }
 
   async findOne(id: number) {

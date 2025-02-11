@@ -6,6 +6,7 @@ import { IStepRepository } from '../../../application/repositories/step.reposito
 import { CreateStepDto } from '../../../presenter/dto/create-step.dto';
 import { UpdateStepDto } from '../../../presenter/dto/update-step.dto';
 import { Step } from 'src/app/steps/application/entities/steps.entity';
+import { PaginationPresenter } from 'src/shared/pagination/pagination.presenter';
 
 @Injectable()
 export class StepRepository implements IStepRepository {
@@ -19,8 +20,23 @@ export class StepRepository implements IStepRepository {
     return this.repository.save(step);
   }
 
-  async findAll(page: number, limit: number, stepName?: string): Promise<Step[]> {
-    return this.repository.find();
+  async findAll(page: number, limit: number, stepName?: string): Promise<PaginationPresenter> {
+    const qb = this.repository.createQueryBuilder('steps');
+
+    if (stepName) {
+      qb.where('steps.stepName LIKE :stepName', { stepName: `%${stepName}%` });
+    }
+    qb.orderBy('steps.stepName', 'ASC');
+
+    const [data, total] = await qb.skip((page - 1) * limit).take(limit).getManyAndCount();
+
+    return new PaginationPresenter({
+      current_page: page,
+      per_page: limit,
+      last_page: Math.ceil(total / limit),
+      total,
+      data,
+    });
   }
 
   async findOne(id: number): Promise<Step | null> {

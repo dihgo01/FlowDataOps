@@ -3,9 +3,9 @@ import { TransactionService } from './typeorm/application/service/transaction.se
 import { TransactionTypeormDomain } from './typeorm/infrastructure/domains/transaction-typeorm.domain';
 import { DatabaseProvider } from './database.providers';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FlowORMEntity } from 'src/app/flow/infrastructure/typeorm/entities/flow-typeorm.entity';
-import { TypeormConfig } from 'src/shared/config/typeorm.config';
-import { StepORMEntity } from 'src/app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
+import { FlowORMEntity } from '../app/flow/infrastructure/typeorm/entities/flow-typeorm.entity';
+import { TypeormConfig } from '../shared/config/typeorm.config';
+import { StepORMEntity } from '../app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
 
 @Module({
   imports: [

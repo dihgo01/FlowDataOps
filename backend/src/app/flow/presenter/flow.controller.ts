@@ -13,8 +13,8 @@ export class FlowController {
   }
 
   @Get()
-  async findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('limit') flowName?: string) {
-    return this.flowService.findAll(page, limit, flowName);
+  async findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('flowName') flowName?: string) {
+    return await this.flowService.findAll(page, limit, flowName);
   }
 
   @Get(':id')

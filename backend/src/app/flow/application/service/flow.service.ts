@@ -15,7 +15,9 @@ export class FlowService {
   }
 
   async findAll(page: number, limit: number, flowName?: string) {
-    return await this.flowRepository.findAll(page, limit, flowName);
+    const pageDefault = page || 1;
+    const limitDefault = limit || 10;
+    return await this.flowRepository.findAll(pageDefault, limitDefault, flowName);
   }
 
   async findOne(id: number) {
