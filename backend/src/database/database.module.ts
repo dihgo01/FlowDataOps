@@ -3,8 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FlowORMEntity } from '../app/flow/infrastructure/typeorm/entities/flow-typeorm.entity';
 import { TypeormConfig } from '../shared/config/typeorm.config';
 import { StepORMEntity } from '../app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
+import { WorkflowStepORMEntity } from '../app/flow/infrastructure/typeorm/entities/workflow-step-typeorm.entity';
 
-const entities = [FlowORMEntity, StepORMEntity];
+const entities = [FlowORMEntity, StepORMEntity, WorkflowStepORMEntity];
 const stage = process.env.NODE_ENV as 'test' | 'migration' | 'default' || 'default';
 @Module({
   imports: [

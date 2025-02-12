@@ -3,11 +3,12 @@ import { DataSourceOptions, BaseEntity } from 'typeorm';
 import { resolve } from 'path';
 
 import { FlowORMEntity } from '../../app/flow/infrastructure/typeorm/entities/flow-typeorm.entity'
-import { StepORMEntity } from 'src/app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
+import { StepORMEntity } from '../../app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
+import { WorkflowStepORMEntity } from '../../app/flow/infrastructure/typeorm/entities/workflow-step-typeorm.entity';
 
 type Stage = 'test' | 'migration' | 'default';
 
-const entities: Array<typeof BaseEntity> = [FlowORMEntity,StepORMEntity];
+const entities: Array<typeof BaseEntity> = [FlowORMEntity, StepORMEntity, WorkflowStepORMEntity];
 
 export class TypeormConfig {
 
@@ -28,7 +29,7 @@ export class TypeormConfig {
       replication: {
         master: {
           host: process.env.DB_DNS,
-          username: process.env.DB_APP_USER, 
+          username: process.env.DB_APP_USER,
           password: process.env.DB_APP_PASS,
           port: Number(process.env.DB_APP_PORT ?? 3306),
           database: process.env.DB_APP_NAME,

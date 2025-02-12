@@ -1,5 +1,5 @@
-import { Flow } from "src/app/flow/application/entities/flow.entity";
-import { StepORMEntity } from "src/app/steps/infrastructure/typeorm/entities/step-typeorm.entity";
+import { Flow } from "../../../application/entities/flow.entity";
+//import { WorkFlowStep } from "src/app/flow/application/entities/workflow-step.entity";
 import {
     BaseEntity,
     Column,
@@ -10,6 +10,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
+import { WorkflowStepORMEntity } from "./workflow-step-typeorm.entity";
 
 @Entity('flows')
 export class FlowORMEntity extends BaseEntity implements Flow {
@@ -22,6 +23,12 @@ export class FlowORMEntity extends BaseEntity implements Flow {
     @Column({ type: 'text', nullable: true })
     public description?: string;
 
+    @OneToMany(() => WorkflowStepORMEntity, (workflowStep) => workflowStep.flow, {
+        cascade: true,
+        eager: true,
+    })
+    public steps?: WorkflowStepORMEntity[];
+
     @CreateDateColumn()
     public createdAt!: Date;
 
@@ -30,7 +37,4 @@ export class FlowORMEntity extends BaseEntity implements Flow {
 
     @DeleteDateColumn()
     public deletedAt?: Date | null;
-
-    //@OneToMany(() => StepORMEntity, step => step.steps)
-    //steps!: StepORMEntity[];
 }

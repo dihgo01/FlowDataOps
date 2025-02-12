@@ -1,10 +1,10 @@
-import { Step } from "src/app/steps/application/entities/steps.entity";
+import { WorkFlowStep } from "./workflow-step.entity";
 
 export class Flow {
     id?: number;
     flowName!: string;
     description?: string;
-    steps?: Step[];
+    steps?: WorkFlowStep[];
     createdAt!: Date;
     updatedAt!: Date;
     deletedAt?: Date | null;

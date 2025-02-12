@@ -1,10 +1,12 @@
-import { Step } from "src/app/steps/application/entities/steps.entity";
+import { WorkflowStepORMEntity } from "../../../../../app/flow/infrastructure/typeorm/entities/workflow-step-typeorm.entity";
+import { Step } from "../../../application/entities/steps.entity";
 import {
     BaseEntity,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -26,7 +28,7 @@ export class StepORMEntity extends BaseEntity implements Step {
     @Column({ type: 'varchar', nullable: false })
     public icon!: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'text', nullable: true }) 
     public config?: string;
 
     @CreateDateColumn()
