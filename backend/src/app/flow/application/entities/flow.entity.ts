@@ -1,7 +1,7 @@
 import { WorkFlowStep } from "./workflow-step.entity";
 
 export class Flow {
-    id?: number;
+    id?: string;
     flowName!: string;
     description?: string;
     steps?: WorkFlowStep[];

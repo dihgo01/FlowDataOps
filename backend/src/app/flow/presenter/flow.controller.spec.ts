@@ -55,7 +55,7 @@ describe('FlowController', () => {
     it('should call FlowService.findOne with correct parameters', async () => {
       const id = '1';
       await controller.findOne(id);
-      expect(service.findOne).toHaveBeenCalledWith(+id);
+      expect(service.findOne).toHaveBeenCalledWith(id);
     });
   });
 
@@ -64,7 +64,7 @@ describe('FlowController', () => {
       const id = '1';
       const updateFlowDto: UpdateFlowDto = { /* add properties here */ };
       await controller.update(id, updateFlowDto);
-      expect(service.update).toHaveBeenCalledWith(+id, updateFlowDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateFlowDto);
     });
   });
 
@@ -72,7 +72,7 @@ describe('FlowController', () => {
     it('should call FlowService.remove with correct parameters', async () => {
       const id = '1';
       await controller.remove(id);
-      expect(service.remove).toHaveBeenCalledWith(+id);
+      expect(service.remove).toHaveBeenCalledWith(id);
     });
   });
 });

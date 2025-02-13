@@ -14,8 +14,8 @@ import { StepORMEntity } from '../../../../../app/steps/infrastructure/typeorm/e
 
 @Entity('flow_steps')
 export class WorkflowStepORMEntity extends BaseEntity implements WorkFlowStep {
-    @PrimaryGeneratedColumn('increment')
-    public id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id: string;
 
     @ManyToOne(() => FlowORMEntity, (workflow) => workflow.steps, { onDelete: 'CASCADE' })
     public flow: FlowORMEntity;

@@ -39,16 +39,16 @@ export class StepRepository implements IStepRepository {
     });
   }
 
-  async findOne(id: number): Promise<Step | null> {
+  async findOne(id: string): Promise<Step | null> {
     return this.repository.findOne({ where: { id } });
   }
 
-  async update(id: number, data: UpdateStepDto): Promise<Step | null> {
+  async update(id: string, data: UpdateStepDto): Promise<Step | null> {
     await this.repository.update(id, data);
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.repository.delete(id);
   }
 }

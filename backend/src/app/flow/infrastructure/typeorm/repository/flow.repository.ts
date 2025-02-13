@@ -22,29 +22,23 @@ export class FlowRepository implements IFlowRepository {
   ) { }
 
   async create(data: CreateFlowDto): Promise<Flow> {
-    let steps: any[] = [];
-    if (data.steps && data.steps.length > 0) {
-      steps = await Promise.all(
-        data.steps.map(async (stepDto) => {
-          const stepEntity = await this.repositoryStep.findOneByOrFail({
-            id: parseInt(stepDto.step_id),
-          });
-          return {
-            step: stepEntity,
-            configuration: stepDto.configuration,
-            order: stepDto.order,
-          };
-        })
-      );
-    }
-
-    const flow = this.repository.create({
-      flowName: data.flowName,
-      description: data.description,
-      steps: steps,
-    });
-
+    const flow = this.repository.create(data);
     return await this.repository.save(flow);
+  }
+
+  async formatSteps(steps: any[]): Promise<any[]> {
+    return await Promise.all(
+      steps.map(async (stepDto) => {
+        const stepEntity = await this.repositoryStep.findOneByOrFail({
+          id: stepDto.step_id,
+        });
+        return {
+          step: stepEntity,
+          configuration: stepDto.configuration,
+          order: stepDto.order,
+        };
+      })
+    );
   }
 
   async findAll(page: number, limit: number, flowName?: string): Promise<PaginationPresenter> {
@@ -66,11 +60,11 @@ export class FlowRepository implements IFlowRepository {
     });
   }
 
-  async findOne(id: number): Promise<Flow | null> {
+  async findOne(id: string): Promise<Flow | null> {
     return this.repository.findOne({ where: { id } });
   }
 
-  async update(id: number, data: UpdateFlowDto): Promise<Flow | null> {
+  async update(id: string, data: UpdateFlowDto): Promise<Flow | null> {
     const flow = await this.repository.findOneOrFail({
       where: { id },
       relations: ['steps'],
@@ -89,7 +83,7 @@ export class FlowRepository implements IFlowRepository {
       const newSteps = await Promise.all(
         data.steps.map(async (stepDto) => {
           const stepEntity = await this.repositoryStep.findOneByOrFail({
-            id: parseInt(stepDto.step_id),
+            id: stepDto.step_id,
           });
 
           return this.repositoryFlowStep.create({
@@ -103,11 +97,11 @@ export class FlowRepository implements IFlowRepository {
 
       flow.steps = newSteps;
     }
-    
+
     return await this.repository.save(flow);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.repository.delete(id);
   }
 }

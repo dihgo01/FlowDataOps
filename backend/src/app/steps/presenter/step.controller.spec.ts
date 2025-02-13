@@ -55,7 +55,7 @@ describe('StepController', () => {
     it('should call StepService.findOne with correct parameters', async () => {
       const id = '1';
       await controller.findOne(id);
-      expect(service.findOne).toHaveBeenCalledWith(+id);
+      expect(service.findOne).toHaveBeenCalledWith(id);
     });
   });
 
@@ -64,7 +64,7 @@ describe('StepController', () => {
       const id = '1';
       const updateStepDto: UpdateStepDto = { stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` };
       await controller.update(id, updateStepDto);
-      expect(service.update).toHaveBeenCalledWith(+id, updateStepDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateStepDto);
     });
   });
 
@@ -72,7 +72,7 @@ describe('StepController', () => {
     it('should call StepService.remove with correct parameters', async () => {
       const id = '1';
       await controller.remove(id);
-      expect(service.remove).toHaveBeenCalledWith(+id);
+      expect(service.remove).toHaveBeenCalledWith(id);
     });
   });
 });

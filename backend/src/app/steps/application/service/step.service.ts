@@ -14,21 +14,21 @@ export class StepService {
     return await this.stepRepository.create(createStepDto);
   }
 
-  async findAll(page: number, limit: number, stepName?: string) {
+  async findAll(page?: number, limit?: number, stepName?: string) {
     const pageDefault = page || 1;
     const limitDefault = limit || 10;
     return await this.stepRepository.findAll(pageDefault, limitDefault, stepName);
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.stepRepository.findOne(id);
   }
 
-  async update(id: number, updateFlowDto: UpdateStepDto) {
+  async update(id: string, updateFlowDto: UpdateStepDto) {
     return await this.stepRepository.update(id, updateFlowDto);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return await this.stepRepository.remove(id);
   }
 }

@@ -8,19 +8,22 @@ export class WorkFlowStepTable1739307574236 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'int',
+                        type: "varchar",
+                        length: "36",
                         isPrimary: true,
                         isGenerated: true,
-                        generationStrategy: 'increment',
+                        generationStrategy: 'uuid',
                     },
                     {
                         name: 'flow_id',
-                        type: 'int',
+                        type: 'varchar',
+                        length: '36',
                         isNullable: false,
                     },
                     {
                         name: 'step_id',
-                        type: 'int',
+                        type: 'varchar',
+                        length: '36',
                         isNullable: false,
                     },
                     {
@@ -53,20 +56,20 @@ export class WorkFlowStepTable1739307574236 implements MigrationInterface {
                 ],
                 foreignKeys: [
                     {
-                      columnNames: ['flow_id'],
-                      referencedTableName: 'flows',
-                      referencedColumnNames: ['id'],
-                      onDelete: 'CASCADE',
-                      onUpdate: 'CASCADE',
+                        columnNames: ['flow_id'],
+                        referencedTableName: 'flows',
+                        referencedColumnNames: ['id'],
+                        onDelete: 'CASCADE',
+                        onUpdate: 'CASCADE',
                     },
                     {
-                      columnNames: ['step_id'],
-                      referencedTableName: 'steps',
-                      referencedColumnNames: ['id'],
-                      onDelete: 'CASCADE',
-                      onUpdate: 'CASCADE',
+                        columnNames: ['step_id'],
+                        referencedTableName: 'steps',
+                        referencedColumnNames: ['id'],
+                        onDelete: 'CASCADE',
+                        onUpdate: 'CASCADE',
                     },
-                  ],
+                ],
             }),
             true
         );

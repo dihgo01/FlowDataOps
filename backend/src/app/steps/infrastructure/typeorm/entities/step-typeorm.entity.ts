@@ -13,8 +13,8 @@ import {
 
 @Entity('steps')
 export class StepORMEntity extends BaseEntity implements Step {
-    @PrimaryGeneratedColumn('increment')
-    public id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id: string;
 
     @Column({ type: 'varchar', nullable: false })
     public stepName!: string;

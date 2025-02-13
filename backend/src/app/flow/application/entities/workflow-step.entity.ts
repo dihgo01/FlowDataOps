@@ -2,7 +2,7 @@ import { Step } from "src/app/steps/application/entities/steps.entity";
 import { Flow } from "./flow.entity";
 
 export class WorkFlowStep {
-    id?: number;
+    id?: string;
     flow: Flow;
     step: Step;
     configuration?: string;

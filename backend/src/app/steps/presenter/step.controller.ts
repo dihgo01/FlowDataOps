@@ -14,22 +14,22 @@ export class StepController {
 
   @Get()
   async findAll(
-    @Query('page') page: number, @Query('limit') limit: number, @Query('stepName') stepName?: string) {
+    @Query('page') page?: number, @Query('limit') limit?: number, @Query('stepName') stepName?: string) {
     return this.stepService.findAll(page, limit, stepName);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.stepService.findOne(+id);
+    return this.stepService.findOne(id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateStepDto: UpdateStepDto) {
-    return this.stepService.update(+id, updateStepDto);
+    return this.stepService.update(id, updateStepDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.stepService.remove(+id);
+    return this.stepService.remove(id);
   }
 }

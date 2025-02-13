@@ -13,22 +13,22 @@ export class FlowController {
   }
 
   @Get()
-  async findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('flowName') flowName?: string) {
+  async findAll(@Query('page') page?: number, @Query('limit') limit?: number, @Query('flowName') flowName?: string) {
     return await this.flowService.findAll(page, limit, flowName);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.flowService.findOne(+id);
+    return this.flowService.findOne(id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateFlowDto: UpdateFlowDto) {
-    return this.flowService.update(+id, updateFlowDto);
+    return this.flowService.update(id, updateFlowDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.flowService.remove(+id);
+    return this.flowService.remove(id);
   }
 }

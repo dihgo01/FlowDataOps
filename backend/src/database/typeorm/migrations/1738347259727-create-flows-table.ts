@@ -8,10 +8,11 @@ export class FlowsTable1732022633459 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: "varchar",
+            length: "36",
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment',
+            generationStrategy: 'uuid',
           },
           {
             name: 'flow_name',

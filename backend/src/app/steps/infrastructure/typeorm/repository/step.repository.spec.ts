@@ -33,7 +33,7 @@ describe('StepRepository', () => {
     describe('create', () => {
         it('should create a new step', async () => {
             const createStepDto: CreateStepDto = { stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` };
-            const stepEntity = { id: 1, ...createStepDto } as StepORMEntity;
+            const stepEntity = { id: '1', ...createStepDto } as StepORMEntity;
 
             jest.spyOn(stepRepositoryMock, 'create').mockReturnValue(stepEntity);
             jest.spyOn(stepRepositoryMock, 'save').mockResolvedValue(stepEntity);
@@ -47,7 +47,7 @@ describe('StepRepository', () => {
 
     describe('findAll', () => {
         it('should return paginated steps', async () => {
-            const stepEntities = [{ id: 1, stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` }] as StepORMEntity[];
+            const stepEntities = [{ id: '1', stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` }] as StepORMEntity[];
             const total = 1;
             const page = 1;
             const limit = 10;
@@ -73,28 +73,28 @@ describe('StepRepository', () => {
 
     describe('findOne', () => {
         it('should return a step by id', async () => {
-            const stepEntity = { id: 1, stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` } as StepORMEntity;
+            const stepEntity = { id: '1', stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` } as StepORMEntity;
 
             jest.spyOn(stepRepositoryMock, 'findOne').mockResolvedValue(stepEntity);
 
-            const result = await repository.findOne(1);
+            const result = await repository.findOne('1');
             expect(result).toEqual(stepEntity);
-            expect(stepRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+            expect(stepRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
         });
     });
 
     describe('update', () => {
         it('should update a step', async () => {
             const updateStepDto: UpdateStepDto = { stepName: 'Updated Step' , icon: 'path/icon', type: 'HTTP', config: `{}` };
-            const stepEntity = { id: 1, ...updateStepDto } as StepORMEntity;
+            const stepEntity = { id: '1', ...updateStepDto } as StepORMEntity;
 
             jest.spyOn(stepRepositoryMock, 'update').mockResolvedValue({ affected: 1 } as any);
             jest.spyOn(stepRepositoryMock, 'findOne').mockResolvedValue(stepEntity);
 
-            const result = await repository.update(1, updateStepDto);
+            const result = await repository.update('1', updateStepDto);
             expect(result).toEqual(stepEntity);
-            expect(stepRepositoryMock.update).toHaveBeenCalledWith(1, updateStepDto);
-            expect(stepRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+            expect(stepRepositoryMock.update).toHaveBeenCalledWith('1', updateStepDto);
+            expect(stepRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
         });
     });
 
@@ -102,8 +102,8 @@ describe('StepRepository', () => {
         it('should remove a step by id', async () => {
             jest.spyOn(stepRepositoryMock, 'delete').mockResolvedValue({ affected: 1 } as any);
 
-            await repository.remove(1);
-            expect(stepRepositoryMock.delete).toHaveBeenCalledWith(1);
+            await repository.remove('1');
+            expect(stepRepositoryMock.delete).toHaveBeenCalledWith('1');
         });
     });
 });

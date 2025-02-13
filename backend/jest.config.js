@@ -17,6 +17,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{ts,tsx,js,jsx}', '!src/**/*.d.ts'],
   coveragePathIgnorePatterns: [
     'src/app/flow/application/entities/flow.entity.ts',
+    'src/app/flow/application/entities/workflow-step.entity.ts',
     'src/app/flow/application/repositories/flow.repository.ts',
     'src/app/steps/application/entities/steps.entity.ts',
     'src/app/steps/application/repositories/step.repository.ts',

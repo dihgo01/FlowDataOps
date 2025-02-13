@@ -6,7 +6,7 @@ import { Step } from "../entities/steps.entity";
 export interface IStepRepository {
     create(data: CreateStepDto): Promise<Step>;
     findAll(page: number, limit: number, stepName?: string): Promise<PaginationPresenter>;
-    findOne(id: number): Promise<Step | null>;
-    update(id: number, data: UpdateStepDto): Promise<Step| null>;
-    remove(id: number): Promise<void>;
+    findOne(id: string): Promise<Step | null>;
+    update(id: string, data: UpdateStepDto): Promise<Step| null>;
+    remove(id: string): Promise<void>;
   }

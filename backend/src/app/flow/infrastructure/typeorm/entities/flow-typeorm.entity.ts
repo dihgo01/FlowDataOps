@@ -14,8 +14,8 @@ import { WorkflowStepORMEntity } from "./workflow-step-typeorm.entity";
 
 @Entity('flows')
 export class FlowORMEntity extends BaseEntity implements Flow {
-    @PrimaryGeneratedColumn('increment')
-    public id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id: string;
 
     @Column({ type: 'varchar', nullable: false })
     public flowName!: string;

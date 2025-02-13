@@ -8,11 +8,12 @@ export class StepsTable1739197204114 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id',
-                        type: 'int',
+                        type: "varchar",
+                        length: "36",
                         isPrimary: true,
                         isGenerated: true,
-                        generationStrategy: 'increment',
-                    },
+                        generationStrategy: 'uuid',
+                      },
                     {
                         name: 'step_name',
                         type: 'varchar',
