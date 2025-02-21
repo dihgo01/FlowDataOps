@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ExecutionService } from '../application/service/execution.service';
-import { CreateStepDto } from './dto/create-execution.dto';
-import { UpdateStepDto } from './dto/update-execution.dto';
+import { CreateExecutionDto } from './dto/create-execution.dto';
+import { UpdateExecutionDto } from './dto/update-execution.dto';
 
 @Controller('executions')
 export class ExecutionController {
   constructor(private readonly executionService: ExecutionService) { }
 
   @Post()
-  async create(@Body() createStepDto: CreateStepDto) {
+  async create(@Body() createStepDto: CreateExecutionDto) {
     return this.executionService.create(createStepDto);
   }
 
@@ -24,7 +24,7 @@ export class ExecutionController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateStepDto: UpdateStepDto) {
+  async update(@Param('id') id: string, @Body() updateStepDto: UpdateExecutionDto) {
     return this.executionService.update(id, updateStepDto);
   }
 

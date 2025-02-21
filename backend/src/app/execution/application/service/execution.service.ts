@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IExecutionRepository } from '../repositories/execution.repository';
 import { CreateExecutionDto } from '../../presenter/dto/create-execution.dto';
 import { UpdateExecutionDto } from '../../presenter/dto/update-execution.dto';
+import { Execution } from '../entities/executions.entity';
 
 @Injectable()
 export class ExecutionService {
@@ -11,9 +12,17 @@ export class ExecutionService {
   ) { }
 
   async create(createExecutionDto: CreateExecutionDto) {
-    const die = await this.executionRepository.create(createExecutionDto);
+    const flow = await this.executionRepository.findOneFlow(createExecutionDto.flowId);
 
-    return await this.executionRepository.create(createExecutionDto);
+    const createExecution: Execution = {
+      flow: flow,
+      status: 'Started',
+      dateExecution: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    return await this.executionRepository.create(createExecution);
   }
 
   async findAll(page?: number, limit?: number, stepName?: string) {
@@ -27,6 +36,7 @@ export class ExecutionService {
   }
 
   async update(id: string, updateExecutionDto: UpdateExecutionDto) {
+
     return await this.executionRepository.update(id, updateExecutionDto);
   }
 

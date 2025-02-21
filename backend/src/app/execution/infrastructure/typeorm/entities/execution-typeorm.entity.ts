@@ -6,7 +6,10 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
@@ -16,7 +19,7 @@ export class ExecutionORMEntity extends BaseEntity implements Execution {
     @PrimaryGeneratedColumn('uuid')
     public id: string;
 
-    @OneToMany(() => FlowORMEntity, (flow) => flow, { onDelete: 'CASCADE' })
+    @ManyToOne(() => FlowORMEntity, (flow) => flow.executions, { eager: true })
     public flow: FlowORMEntity;
 
     @Column({ type: 'varchar', nullable: false })

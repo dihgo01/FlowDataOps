@@ -2,7 +2,7 @@ import { Flow } from "src/app/flow/application/entities/flow.entity";
 
 export class Execution {
     id?: string;
-    flow!: Flow;
+    flow?: Flow;
     status: string;
     dateExecution: Date;
     outputResponse?: string;

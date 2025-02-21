@@ -1,4 +1,12 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateStepDto } from './create-execution.dto';
+import { IsDate, IsOptional, IsString } from "class-validator";
 
-export class UpdateExecutionDto extends PartialType(CreateStepDto) {}
+
+export class UpdateExecutionDto {
+    @IsString()
+    @IsOptional()
+    status?: string;
+
+    @IsDate()
+    @IsOptional()
+    dateExecution?: Date;
+}

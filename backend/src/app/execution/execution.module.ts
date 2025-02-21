@@ -10,7 +10,7 @@ import { DatabaseModule } from 'src/database/database.module';
   ],
   controllers: [ExecutionController],
   providers: [
-    ExecutionService,
+    ExecutionService, 
     {
       provide: 'IExecutionRepository',
       useClass: ExecutionRepository,

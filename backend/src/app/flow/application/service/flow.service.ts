@@ -14,7 +14,7 @@ export class FlowService {
     let steps: any[] = [];
 
     if (createFlowDto.steps && createFlowDto.steps.length > 0) {
-      steps = await this.flowRepository.formatSteps(createFlowDto.steps);
+      steps = await this.formatSteps(createFlowDto.steps);
     }
 
     const flow = {
@@ -37,7 +37,42 @@ export class FlowService {
   }
 
   async update(id: string, updateFlowDto: UpdateFlowDto) {
-    return await this.flowRepository.update(id, updateFlowDto);
+    const findFlow = await this.flowRepository.findOne(id);
+
+    if (!findFlow) {
+      return new Error('Flow not found');
+    }
+
+    if (updateFlowDto.flowName !== undefined) {
+      findFlow.flowName = updateFlowDto.flowName;
+    }
+    if (updateFlowDto.description !== undefined) {
+      findFlow.description = updateFlowDto.description;
+    }
+
+    let steps: any[] | undefined = findFlow.steps;
+    await this.flowRepository.removeAllStep(id);
+
+    if (updateFlowDto.steps && updateFlowDto.steps.length > 0) {
+      steps = await this.formatSteps(updateFlowDto.steps);
+    }
+
+    findFlow.steps = steps;
+
+    return await this.flowRepository.update(findFlow);
+  }
+
+  async formatSteps(steps: any[]) {
+    return await Promise.all(
+      steps.map(async (stepDto) => {
+        const stepEntity = await this.flowRepository.findStepOne(stepDto.step_id);
+        return {
+          step: stepEntity,
+          configuration: stepDto.configuration,
+          order: stepDto.order,
+        };
+      })
+    );
   }
 
   async remove(id: string) {
