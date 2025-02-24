@@ -1,31 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExecutionORMEntity } from 'src/app/execution/infrastructure/typeorm/entities/execution-typeorm.entity';
+import { ExecutionFlowORMEntity } from 'src/app/execution/infrastructure/typeorm/entities/execution-typeorm.entity';
 import { IExecutionRepository } from '../../../application/repositories/execution.repository';
 import { UpdateExecutionDto } from '../../../presenter/dto/update-execution.dto';
 import { PaginationPresenter } from 'src/shared/pagination/pagination.presenter';
-import { Execution } from 'src/app/execution/application/entities/executions.entity';
+import { ExecutionFlow } from 'src/app/execution/application/entities/executions.entity';
 import { FlowORMEntity } from 'src/app/flow/infrastructure/typeorm/entities/flow-typeorm.entity';
 
 @Injectable()
 export class ExecutionRepository implements IExecutionRepository {
   constructor(
-    @InjectRepository(ExecutionORMEntity)
-    private readonly repository: Repository<ExecutionORMEntity>,
+    @InjectRepository(ExecutionFlowORMEntity)
+    private readonly repository: Repository<ExecutionFlowORMEntity>,
     @InjectRepository(FlowORMEntity)
     private readonly repositoryFlow: Repository<FlowORMEntity>
   ) { }
 
-  async create(data: Execution): Promise<Execution> {
+  async create(data: ExecutionFlow): Promise<ExecutionFlow> {
     console.log("DATA REPOSITORY", data)
-    const dataEntity = {
-      flow_id: data.flow?.id, 
-      status: data.status,
-      dateExecution: data.dateExecution,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-    }
+   
     const execution = this.repository.create(data);
     return this.repository.save(execution);
   }
@@ -44,7 +38,7 @@ export class ExecutionRepository implements IExecutionRepository {
     });
   }
 
-  async findOne(id: string): Promise<Execution | null> {
+  async findOne(id: string): Promise<ExecutionFlow | null> {
     return this.repository.findOne({ where: { id } });
   }
 
@@ -53,7 +47,7 @@ export class ExecutionRepository implements IExecutionRepository {
   }
 
 
-  async update(id: string, data: UpdateExecutionDto): Promise<Execution | null> {
+  async update(id: string, data: UpdateExecutionDto): Promise<ExecutionFlow | null> {
     await this.repository.update(id, data);
     return this.findOne(id);
   }

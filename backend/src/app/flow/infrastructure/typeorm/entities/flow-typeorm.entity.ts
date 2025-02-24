@@ -1,5 +1,4 @@
 import { Flow } from "../../../application/entities/flow.entity";
-//import { WorkFlowStep } from "src/app/flow/application/entities/workflow-step.entity";
 import {
     BaseEntity,
     Column,
@@ -11,7 +10,6 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import { WorkflowStepORMEntity } from "./workflow-step-typeorm.entity";
-import { ExecutionORMEntity } from "src/app/execution/infrastructure/typeorm/entities/execution-typeorm.entity";
 
 @Entity('flows')
 export class FlowORMEntity extends BaseEntity implements Flow {
@@ -39,6 +37,4 @@ export class FlowORMEntity extends BaseEntity implements Flow {
     @DeleteDateColumn()
     public deletedAt?: Date | null;
 
-    @OneToMany(() => ExecutionORMEntity, (execution) => execution.flow)
-    public executions?: ExecutionORMEntity[];
 }

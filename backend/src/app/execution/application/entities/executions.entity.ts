@@ -1,6 +1,6 @@
 import { Flow } from "src/app/flow/application/entities/flow.entity";
 
-export class Execution {
+export class ExecutionFlow {
     id?: string;
     flow?: Flow;
     status: string;
@@ -10,7 +10,7 @@ export class Execution {
     updatedAt!: Date;
     deletedAt?: Date | null;
 
-    constructor(target: Execution) {
+    constructor(target: ExecutionFlow) {
         Object.assign(this, target);
     }
 }

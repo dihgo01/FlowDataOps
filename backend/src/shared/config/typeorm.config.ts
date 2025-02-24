@@ -5,10 +5,11 @@ import { resolve } from 'path';
 import { FlowORMEntity } from '../../app/flow/infrastructure/typeorm/entities/flow-typeorm.entity'
 import { StepORMEntity } from '../../app/steps/infrastructure/typeorm/entities/step-typeorm.entity';
 import { WorkflowStepORMEntity } from '../../app/flow/infrastructure/typeorm/entities/workflow-step-typeorm.entity';
+import { ExecutionFlowORMEntity } from '../../app/execution/infrastructure/typeorm/entities/execution-typeorm.entity';
 
 type Stage = 'test' | 'migration' | 'default';
 
-const entities: Array<typeof BaseEntity> = [FlowORMEntity, StepORMEntity, WorkflowStepORMEntity];
+const entities: Array<typeof BaseEntity> = [FlowORMEntity, StepORMEntity, WorkflowStepORMEntity, ExecutionFlowORMEntity];
 
 export class TypeormConfig {
 

@@ -1,25 +1,22 @@
-import { Execution } from "src/app/execution/application/entities/executions.entity";
-import { FlowORMEntity } from "src/app/flow/infrastructure/typeorm/entities/flow-typeorm.entity";
 import {
-    BaseEntity,
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
     Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
+    Column,
+    ManyToOne,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+    BaseEntity
+} from 'typeorm';
+import { FlowORMEntity } from '../../../../flow/infrastructure/typeorm/entities/flow-typeorm.entity';   
+import { ExecutionFlow } from 'src/app/execution/application/entities/executions.entity';
 
 @Entity('executions')
-export class ExecutionORMEntity extends BaseEntity implements Execution {
+export class ExecutionFlowORMEntity extends BaseEntity implements ExecutionFlow {
     @PrimaryGeneratedColumn('uuid')
     public id: string;
 
-    @ManyToOne(() => FlowORMEntity, (flow) => flow.executions, { eager: true })
+    @ManyToOne(() => FlowORMEntity, { eager: true })
     public flow: FlowORMEntity;
 
     @Column({ type: 'varchar', nullable: false })
