@@ -1,25 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaginationPresenter } from '../../../../shared/pagination/pagination.presenter';
-import { StepService } from './execution.service';
-import { IStepRepository } from '../repositories/execution.repository';
-import { CreateStepDto } from '../../presenter/dto/create-execution.dto';
-import { Step } from '../entities/executions.entity';
-import { UpdateStepDto } from '../../presenter/dto/update-execution.dto';
+import { ExecutionService } from './execution.service';
+import { IExecutionRepository } from '../repositories/execution.repository';
+import { CreateExecutionDto } from '../../presenter/dto/create-execution.dto';
+import { ExecutionFlow } from '../entities/executions.entity';
+import { UpdateExecutionDto } from '../../presenter/dto/update-execution.dto';
+import { Flow } from 'src/app/flow/application/entities/flow.entity';
 
 describe('ExecutionService', () => {
-  let service: StepService;
-  let stepRepository: IStepRepository;
+  let service: ExecutionService;
+  let executionRepository: IExecutionRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        StepService,
+        ExecutionService,
         {
-          provide: 'IStepRepository',
+          provide: 'IExecutionRepository',
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
             findOne: jest.fn(),
+            findOneFlow: jest.fn(),
             update: jest.fn(),
             remove: jest.fn(),
           },
@@ -27,94 +29,85 @@ describe('ExecutionService', () => {
       ],
     }).compile();
 
-    service = module.get<StepService>(StepService);
-    stepRepository = module.get<IStepRepository>('IStepRepository');
+    service = module.get<ExecutionService>(ExecutionService);
+    executionRepository = module.get<IExecutionRepository>('IExecutionRepository');
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a step', async () => {
-    const createStepDto: CreateStepDto = { stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` };
-    const result = { id: '1', ...createStepDto } as Step;
-    jest.spyOn(stepRepository, 'create').mockResolvedValue(result);
+  it('should create an execution', async () => {
+    const createDate = new Date();
+    const createExecutionDto: CreateExecutionDto = { flowId: '1' };
+    const flow = {
+      id: '1',
+      flowName: 'Test'
+    } as Flow;
 
-    expect(await service.create(createStepDto)).toEqual(result);
-    expect(stepRepository.create).toHaveBeenCalledWith(createStepDto);
+    const createExecution: ExecutionFlow = {
+      flow: flow,
+      status: 'Started',
+      dateExecution: createDate,
+      createdAt: createDate,
+      updatedAt: createDate,
+    };
+    jest.spyOn(executionRepository, 'findOneFlow').mockResolvedValue(flow);
+    jest.spyOn(executionRepository, 'create').mockResolvedValue(createExecution);
+
+    const result = await service.create(createExecutionDto);
+
+    expect(result.flow?.id).toEqual(createExecution.flow?.id);
+    expect(result.status).toEqual(createExecution.status);
+    expect(result.dateExecution).toEqual(createExecution.dateExecution);
+    expect(executionRepository.findOneFlow).toHaveBeenCalledWith(createExecutionDto.flowId);
+    expect(executionRepository.create).toHaveBeenCalled();
   });
 
-  it('should find all steps', async () => {
-    const result: Step[] = [{ id: '1', stepName: 'Test Flow', icon: 'path/icon', type: 'HTTP', config: `{}`, createdAt: new Date(), updatedAt: new Date() }];
-    const page = 1;
-    const limit = 10;
-    const pagination = new PaginationPresenter({
-      current_page: page,
-      per_page: limit,
-      last_page: Math.ceil(result.length / limit),
-      total: result.length,
-      data: result,
+  it('should find all executions', async () => {
+    const result = new PaginationPresenter({
+      current_page: 1,
+      per_page: 10,
+      last_page: 1,
+      total: 1,
+      data: [{
+        id: '1',
+        flow: { id: '1', flowName: 'Test Flow' } as Flow,
+        status: 'Started',
+        dateExecution: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }]
     });
+    jest.spyOn(executionRepository, 'findAll').mockResolvedValue(result);
 
-    jest.spyOn(stepRepository, 'findAll').mockResolvedValue(pagination);
-
-    const serviceCall = await service.findAll(page, limit);
-
-    expect(serviceCall.data).toEqual(pagination.data);
-    expect(serviceCall.total).toEqual(pagination.total);
-    expect(serviceCall.current_page).toEqual(pagination.current_page);
-    expect(serviceCall.per_page).toEqual(pagination.per_page);
-    expect(serviceCall.last_page).toEqual(pagination.last_page);
-    expect(stepRepository.findAll).toHaveBeenCalledWith(1, 10, undefined);
+    expect(await service.findAll(1, 10)).toEqual(result);
+    expect(executionRepository.findAll).toHaveBeenCalledWith(1, 10);
   });
 
-  it('should find all flows page null and limit null', async () => {
-    const result: Step[] = [{ id: '1', stepName: 'Test Flow', icon: 'path/icon', type: 'HTTP', config: `{}`, createdAt: new Date(), updatedAt: new Date() }];
-    const page = 1;
-    const limit = 10;
-    const pagination = new PaginationPresenter({
-      current_page: page,
-      per_page: limit,
-      last_page: Math.ceil(result.length / limit),
-      total: result.length,
-      data: result,
-    });
-
-    jest.spyOn(stepRepository, 'findAll').mockResolvedValue(pagination);
-
-    const serviceCall = await service.findAll();
-
-    expect(serviceCall.data).toEqual(pagination.data);
-    expect(serviceCall.total).toEqual(pagination.total);
-    expect(serviceCall.current_page).toEqual(pagination.current_page);
-    expect(serviceCall.per_page).toEqual(pagination.per_page);
-    expect(serviceCall.last_page).toEqual(pagination.last_page);
-    expect(stepRepository.findAll).toHaveBeenCalledWith(1, 10, undefined);
-  });
-
-  it('should find one step', async () => {
-    const result = { id: '1', stepName: 'Test Flow', icon: 'path/icon', type: 'HTTP', config: `{}`, } as Step;
-    jest.spyOn(stepRepository, 'findOne').mockResolvedValue(result);
+  it('should find one execution', async () => {
+    const result = { id: '1', flow: { id: '1', flowName: 'Test Flow' } as Flow, status: 'Started', dateExecution: new Date(), createdAt: new Date(), updatedAt: new Date() };
+    jest.spyOn(executionRepository, 'findOne').mockResolvedValue(result);
 
     expect(await service.findOne('1')).toEqual(result);
-    expect(stepRepository.findOne).toHaveBeenCalledWith('1');
+    expect(executionRepository.findOne).toHaveBeenCalledWith('1');
   });
 
-  it('should update a step', async () => {
-    const updateFlowDto: UpdateStepDto = { stepName: 'Test Flow', icon: 'path/icon', type: 'HTTP', config: `{}`, };
-    const result = { id: '1', ...updateFlowDto } as Step;
-    jest.spyOn(stepRepository, 'update').mockResolvedValue(result);
+  it('should update an execution', async () => {
+    const updateExecutionDto: UpdateExecutionDto = { status: 'Completed' };
+    const result = { id: '1', flow: { id: '1', flowName: 'Test Flow' } as Flow, status: 'Completed', dateExecution: new Date(), createdAt: new Date(), updatedAt: new Date() };
+    jest.spyOn(executionRepository, 'update').mockResolvedValue(result);
 
-    expect(await service.update('1', updateFlowDto)).toEqual(result);
-    expect(stepRepository.update).toHaveBeenCalledWith('1', updateFlowDto);
+    expect(await service.update('1', updateExecutionDto)).toEqual(result);
+    expect(executionRepository.update).toHaveBeenCalledWith('1', updateExecutionDto);
   });
 
-  it('should remove a step', async () => {
-    jest.spyOn(stepRepository, 'remove').mockResolvedValue();
+  it('should remove an execution', async () => {
+    jest.spyOn(executionRepository, 'remove').mockResolvedValue();
 
     await service.remove('1');
 
-    expect(stepRepository.remove).toHaveBeenCalledWith('1');
+    expect(executionRepository.remove).toHaveBeenCalledWith('1');
   });
 });
 

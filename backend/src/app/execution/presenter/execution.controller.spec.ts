@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StepController } from './execution.controller';
-import { StepService } from '../application/service/execution.service';
-import { CreateStepDto } from './dto/create-execution.dto';
-import { UpdateStepDto } from './dto/update-execution.dto';
+import { ExecutionController } from './execution.controller';
+import { ExecutionService } from '../application/service/execution.service';
+import { CreateExecutionDto } from './dto/create-execution.dto';
+import { UpdateExecutionDto } from './dto/update-execution.dto';
 
-describe('StepController', () => {
-  let controller: StepController;
-  let service: StepService;
+describe('ExecutionController', () => {
+  let controller: ExecutionController;
+  let service: ExecutionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [StepController],
+      controllers: [ExecutionController],
       providers: [
         {
-          provide: StepService,
+          provide: ExecutionService,
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
@@ -25,8 +25,8 @@ describe('StepController', () => {
       ],
     }).compile();
 
-    controller = module.get<StepController>(StepController);
-    service = module.get<StepService>(StepService);
+    controller = module.get<ExecutionController>(ExecutionController);
+    service = module.get<ExecutionService>(ExecutionService);
   });
 
   it('should be defined', () => {
@@ -34,25 +34,24 @@ describe('StepController', () => {
   });
 
   describe('create', () => {
-    it('should call StepService.create with correct parameters', async () => {
-      const createStepDto: CreateStepDto = { stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` };
-      await controller.create(createStepDto);
-      expect(service.create).toHaveBeenCalledWith(createStepDto);
+    it('should call executionService.create with correct parameters', async () => {
+      const createExecutionDto: CreateExecutionDto = { flowId: 'Test Step' };
+      await controller.create(createExecutionDto);
+      expect(service.create).toHaveBeenCalledWith(createExecutionDto);
     });
   });
 
   describe('findAll', () => {
-    it('should call StepService.findAll with correct parameters', async () => {
+    it('should call executionService.findAll with correct parameters', async () => {
       const page = 1;
       const limit = 10;
-      const stepName = 'testStep';
-      await controller.findAll(page, limit, stepName);
-      expect(service.findAll).toHaveBeenCalledWith(page, limit, stepName);
+      await controller.findAll(page, limit);
+      expect(service.findAll).toHaveBeenCalledWith(page, limit);
     });
   });
 
   describe('findOne', () => {
-    it('should call StepService.findOne with correct parameters', async () => {
+    it('should call executionService.findOne with correct parameters', async () => {
       const id = '1';
       await controller.findOne(id);
       expect(service.findOne).toHaveBeenCalledWith(id);
@@ -60,16 +59,16 @@ describe('StepController', () => {
   });
 
   describe('update', () => {
-    it('should call StepService.update with correct parameters', async () => {
+    it('should call executionService.update with correct parameters', async () => {
       const id = '1';
-      const updateStepDto: UpdateStepDto = { stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` };
-      await controller.update(id, updateStepDto);
-      expect(service.update).toHaveBeenCalledWith(id, updateStepDto);
+      const updateExecutionDto: UpdateExecutionDto = { dateExecution: new Date(), outputResponse: '{"data": "test"}', status: 'Completed' };
+      await controller.update(id, updateExecutionDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateExecutionDto);
     });
   });
 
   describe('remove', () => {
-    it('should call StepService.remove with correct parameters', async () => {
+    it('should call executionService.remove with correct parameters', async () => {
       const id = '1';
       await controller.remove(id);
       expect(service.remove).toHaveBeenCalledWith(id);

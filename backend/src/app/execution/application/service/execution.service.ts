@@ -25,10 +25,10 @@ export class ExecutionService {
     return await this.executionRepository.create(createExecution);
   }
 
-  async findAll(page?: number, limit?: number, stepName?: string) {
+  async findAll(page?: number, limit?: number) {
     const pageDefault = page || 1;
     const limitDefault = limit || 10;
-    return await this.executionRepository.findAll(pageDefault, limitDefault, stepName);
+    return await this.executionRepository.findAll(pageDefault, limitDefault);
   }
 
   async findOne(id: string) {
@@ -36,7 +36,6 @@ export class ExecutionService {
   }
 
   async update(id: string, updateExecutionDto: UpdateExecutionDto) {
-
     return await this.executionRepository.update(id, updateExecutionDto);
   }
 

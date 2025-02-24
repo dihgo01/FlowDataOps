@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StepsModule } from './execution.module';
-import { StepService } from './application/service/execution.service';
-import { StepController } from './presenter/execution.controller';
-import { StepRepository } from './infrastructure/typeorm/repository/execution.repository';
+import { ExecutionModule } from './execution.module';
+import { ExecutionService } from './application/service/execution.service';
+import { ExecutionController } from './presenter/execution.controller';
+import { ExecutionRepository } from './infrastructure/typeorm/repository/execution.repository';
 import { DatabaseModule } from 'src/database/database.module';
 
-describe('StepsModule', () => {
+describe('ExecutionModule', () => {
     let module: TestingModule;
 
     beforeAll(async () => {
         module = await Test.createTestingModule({
-            imports: [StepsModule],
+            imports: [ExecutionModule],
         }).compile();
     });
 
@@ -23,18 +23,18 @@ describe('StepsModule', () => {
         expect(databaseModule).toBeInstanceOf(DatabaseModule);
     });
 
-    it('should provide StepService', () => {
-        const stepService = module.get<StepService>(StepService);
-        expect(stepService).toBeInstanceOf(StepService);
+    it('should provide ExecutionService', () => {
+        const executionService = module.get<ExecutionService>(ExecutionService);
+        expect(executionService).toBeInstanceOf(ExecutionService);
     });
 
-    it('should provide StepController', () => {
-        const stepController = module.get<StepController>(StepController);
-        expect(stepController).toBeInstanceOf(StepController);
+    it('should provide ExecutionController', () => {
+        const executionController = module.get<ExecutionController>(ExecutionController);
+        expect(executionController).toBeInstanceOf(ExecutionController);
     });
 
-    it('should provide IStepRepository', () => {
-        const stepRepository = module.get<StepRepository>('IStepRepository');
-        expect(stepRepository).toBeInstanceOf(StepRepository);
+    it('should provide IExecutionRepository', () => {
+        const executionRepository = module.get<ExecutionRepository>('IExecutionRepository');
+        expect(executionRepository).toBeInstanceOf(ExecutionRepository);
     });
 });

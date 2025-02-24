@@ -18,8 +18,6 @@ export class ExecutionRepository implements IExecutionRepository {
   ) { }
 
   async create(data: ExecutionFlow): Promise<ExecutionFlow> {
-    console.log("DATA REPOSITORY", data)
-   
     const execution = this.repository.create(data);
     return this.repository.save(execution);
   }
@@ -46,8 +44,10 @@ export class ExecutionRepository implements IExecutionRepository {
     return this.repositoryFlow.findOneOrFail({ where: { id } });
   }
 
-
   async update(id: string, data: UpdateExecutionDto): Promise<ExecutionFlow | null> {
+    if (data.outputResponse) {
+      data.outputResponse = JSON.stringify(data.outputResponse)
+    }
     await this.repository.update(id, data);
     return this.findOne(id);
   }

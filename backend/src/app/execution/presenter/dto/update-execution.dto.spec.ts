@@ -1,25 +1,39 @@
-import { UpdateStepDto } from './update-execution.dto';
-import { CreateStepDto } from './create-execution.dto';
+import { validate } from 'class-validator';
+import { UpdateExecutionDto } from './update-execution.dto';
 
-describe('UpdateStepDto', () => {
-    it('should be defined', () => {
-        expect(new UpdateStepDto()).toBeDefined();
+describe('UpdateExecutionDto', () => {
+    it('should validate with all optional fields', async () => {
+        const dto = new UpdateExecutionDto();
+        dto.status = 'completed';
+        dto.dateExecution = '2025-02-24 15:06:48';
+        dto.outputResponse = '{"result": "success"}';
+
+        const errors = await validate(dto);
+        expect(errors.length).toBe(0);
     });
 
-    it('should inherit properties from CreateStepDto', () => {
-        const createStepDto = new CreateStepDto();
-        const updateStepDto = new UpdateStepDto();
+    it('should validate with no fields', async () => {
+        const dto = new UpdateExecutionDto();
 
-        for (const key in createStepDto) {
-            expect(updateStepDto).toHaveProperty(key);
-        }
+        const errors = await validate(dto);
+        expect(errors.length).toBe(0);
     });
 
-    it('should allow partial updates', () => {
-        const partialUpdate = { stepName: 'Updated Step' };
-        const updateStepDto = new UpdateStepDto(partialUpdate);
-        updateStepDto.stepName = partialUpdate.stepName;
+    it('should fail validation with incorrect status type', async () => {
+        const dto = new UpdateExecutionDto();
+        dto.status = 123 as any;
 
-        expect(updateStepDto.stepName).toBe(partialUpdate.stepName);
+        const errors = await validate(dto);
+        expect(errors.length).toBeGreaterThan(0);
+        expect(errors[0].constraints?.isString).toBeDefined();
+    });
+
+    it('should fail validation with incorrect dateExecution type', async () => {
+        const dto = new UpdateExecutionDto();
+        dto.dateExecution = new Date() as any;
+
+        const errors = await validate(dto);
+        expect(errors.length).toBeGreaterThan(0);
+        expect(errors[0].constraints?.isString).toBeDefined();
     });
 });

@@ -56,7 +56,6 @@ export class FlowRepository implements IFlowRepository {
   }
 
   async update(data: Flow): Promise<Flow> {
-
     if (data.steps) {
       const newSteps = await Promise.all(
         data.steps.map(async (stepDto) => {

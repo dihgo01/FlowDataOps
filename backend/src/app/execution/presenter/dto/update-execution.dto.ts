@@ -1,12 +1,14 @@
-import { IsDate, IsOptional, IsString } from "class-validator";
-
+import { IsJSON, IsOptional, IsString } from "class-validator";
 
 export class UpdateExecutionDto {
     @IsString()
     @IsOptional()
     status?: string;
 
-    @IsDate()
+    @IsString()
     @IsOptional()
-    dateExecution?: Date;
+    dateExecution?: Date | string;
+
+    @IsOptional()
+    outputResponse?: string;
 }

@@ -14,8 +14,8 @@ export class ExecutionController {
 
   @Get()
   async findAll(
-    @Query('page') page?: number, @Query('limit') limit?: number, @Query('stepName') stepName?: string) {
-    return this.executionService.findAll(page, limit, stepName);
+    @Query('page') page?: number, @Query('limit') limit?: number) {
+    return this.executionService.findAll(page, limit);
   }
 
   @Get(':id')

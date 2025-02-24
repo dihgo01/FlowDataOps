@@ -1,29 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PaginationPresenter } from '../../../../../shared/pagination/pagination.presenter';
-import { StepRepository } from './execution.repository';
-import { StepORMEntity } from '../entities/execution-typeorm.entity';
-import { CreateStepDto } from 'src/app/steps/presenter/dto/create-step.dto';
-import { UpdateStepDto } from 'src/app/steps/presenter/dto/update-step.dto';
+import { ExecutionRepository } from './execution.repository';
+import { ExecutionFlowORMEntity } from '../entities/execution-typeorm.entity';
+import { FlowORMEntity } from '../../../../flow/infrastructure/typeorm/entities/flow-typeorm.entity';
+import { UpdateExecutionDto } from '../../../presenter/dto/update-execution.dto';
+import { PaginationPresenter } from 'src/shared/pagination/pagination.presenter';
+import { ExecutionFlow } from 'src/app/execution/application/entities/executions.entity';
+import { Flow } from 'src/app/flow/application/entities/flow.entity';
 
-describe('StepRepository', () => {
-    let repository: StepRepository;
-    let stepRepositoryMock: Repository<StepORMEntity>;
+describe('ExecutionRepository', () => {
+    let repository: ExecutionRepository;
+    let executionRepo: Repository<ExecutionFlowORMEntity>;
+    let flowRepo: Repository<FlowORMEntity>;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
-                StepRepository,
+                ExecutionRepository,
                 {
-                    provide: getRepositoryToken(StepORMEntity),
+                    provide: getRepositoryToken(ExecutionFlowORMEntity),
+                    useClass: Repository,
+                },
+                {
+                    provide: getRepositoryToken(FlowORMEntity),
                     useClass: Repository,
                 },
             ],
         }).compile();
 
-        repository = module.get<StepRepository>(StepRepository);
-        stepRepositoryMock = module.get<Repository<StepORMEntity>>(getRepositoryToken(StepORMEntity));
+        repository = module.get<ExecutionRepository>(ExecutionRepository);
+        executionRepo = module.get<Repository<ExecutionFlowORMEntity>>(getRepositoryToken(ExecutionFlowORMEntity));
+        flowRepo = module.get<Repository<FlowORMEntity>>(getRepositoryToken(FlowORMEntity));
     });
 
     it('should be defined', () => {
@@ -31,79 +39,89 @@ describe('StepRepository', () => {
     });
 
     describe('create', () => {
-        it('should create a new step', async () => {
-            const createStepDto: CreateStepDto = { stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` };
-            const stepEntity = { id: '1', ...createStepDto } as StepORMEntity;
+        it('should create a new execution', async () => {
+            const executionData: ExecutionFlow = { 
+                id: '1', 
+                flow: { id: '1', flowName: 'Test' } as Flow, 
+                status: 'Started', 
+                dateExecution: new Date(), 
+                createdAt: new Date(), 
+                updatedAt: new Date() 
+            } as ExecutionFlow;
+            
+            jest.spyOn(executionRepo, 'create').mockReturnValue(executionData);
+            jest.spyOn(executionRepo, 'save').mockResolvedValue(executionData);
 
-            jest.spyOn(stepRepositoryMock, 'create').mockReturnValue(stepEntity);
-            jest.spyOn(stepRepositoryMock, 'save').mockResolvedValue(stepEntity);
-
-            const result = await repository.create(createStepDto);
-            expect(result).toEqual(stepEntity);
-            expect(stepRepositoryMock.create).toHaveBeenCalledWith(createStepDto);
-            expect(stepRepositoryMock.save).toHaveBeenCalledWith(stepEntity);
+            const result = await repository.create(executionData);
+            expect(result).toEqual(executionData);
+            expect(executionRepo.create).toHaveBeenCalledWith(executionData);
+            expect(executionRepo.save).toHaveBeenCalledWith(executionData);
         });
     });
 
     describe('findAll', () => {
-        it('should return paginated steps', async () => {
-            const stepEntities = [{ id: '1', stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` }] as StepORMEntity[];
+        it('should return paginated executions', async () => {
+            const executions = [{ id: '1', name: 'Test Execution' }] as ExecutionFlowORMEntity[];
             const total = 1;
-            const page = 1;
-            const limit = 10;
-
-            jest.spyOn(stepRepositoryMock, 'createQueryBuilder').mockImplementation(() => ({
-                where: jest.fn().mockReturnThis(),
-                orderBy: jest.fn().mockReturnThis(),
+            jest.spyOn(executionRepo, 'createQueryBuilder').mockReturnValue({
                 skip: jest.fn().mockReturnThis(),
                 take: jest.fn().mockReturnThis(),
-                getManyAndCount: jest.fn().mockResolvedValue([stepEntities, total]),
-            }) as any);
+                getManyAndCount: jest.fn().mockResolvedValue([executions, total]),
+            } as any);
 
-            const result = await repository.findAll(page, limit);
+            const result = await repository.findAll(1, 10);
             expect(result).toEqual(new PaginationPresenter({
-                current_page: page,
-                per_page: limit,
-                last_page: Math.ceil(total / limit),
+                current_page: 1,
+                per_page: 10,
+                last_page: 1,
                 total,
-                data: stepEntities,
+                data: executions,
             }));
         });
     });
 
     describe('findOne', () => {
-        it('should return a step by id', async () => {
-            const stepEntity = { id: '1', stepName: 'Test Step', icon: 'path/icon', type: 'HTTP', config: `{}` } as StepORMEntity;
-
-            jest.spyOn(stepRepositoryMock, 'findOne').mockResolvedValue(stepEntity);
+        it('should return a single execution', async () => {
+            const execution = { id: '1', name: 'Test Execution' } as ExecutionFlowORMEntity;
+            jest.spyOn(executionRepo, 'findOne').mockResolvedValue(execution);
 
             const result = await repository.findOne('1');
-            expect(result).toEqual(stepEntity);
-            expect(stepRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+            expect(result).toEqual(execution);
+            expect(executionRepo.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+        });
+    });
+
+    describe('findOneFlow', () => {
+        it('should return a single flow', async () => {
+            const flow = { id: '1', name: 'Test Flow' } as FlowORMEntity;
+            jest.spyOn(flowRepo, 'findOneOrFail').mockResolvedValue(flow);
+
+            const result = await repository.findOneFlow('1');
+            expect(result).toEqual(flow);
+            expect(flowRepo.findOneOrFail).toHaveBeenCalledWith({ where: { id: '1' } });
         });
     });
 
     describe('update', () => {
-        it('should update a step', async () => {
-            const updateStepDto: UpdateStepDto = { stepName: 'Updated Step' , icon: 'path/icon', type: 'HTTP', config: `{}` };
-            const stepEntity = { id: '1', ...updateStepDto } as StepORMEntity;
+        it('should update an execution', async () => {
+            const updateData: UpdateExecutionDto = { name: 'Updated Execution' };
+            const updatedExecution = { id: '1', name: 'Updated Execution' } as ExecutionFlowORMEntity;
+            jest.spyOn(executionRepo, 'update').mockResolvedValue(undefined);
+            jest.spyOn(executionRepo, 'findOne').mockResolvedValue(updatedExecution);
 
-            jest.spyOn(stepRepositoryMock, 'update').mockResolvedValue({ affected: 1 } as any);
-            jest.spyOn(stepRepositoryMock, 'findOne').mockResolvedValue(stepEntity);
-
-            const result = await repository.update('1', updateStepDto);
-            expect(result).toEqual(stepEntity);
-            expect(stepRepositoryMock.update).toHaveBeenCalledWith('1', updateStepDto);
-            expect(stepRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+            const result = await repository.update('1', updateData);
+            expect(result).toEqual(updatedExecution);
+            expect(executionRepo.update).toHaveBeenCalledWith('1', updateData);
+            expect(executionRepo.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
         });
     });
 
     describe('remove', () => {
-        it('should remove a step by id', async () => {
-            jest.spyOn(stepRepositoryMock, 'delete').mockResolvedValue({ affected: 1 } as any);
+        it('should remove an execution', async () => {
+            jest.spyOn(executionRepo, 'delete').mockResolvedValue(undefined);
 
             await repository.remove('1');
-            expect(stepRepositoryMock.delete).toHaveBeenCalledWith('1');
+            expect(executionRepo.delete).toHaveBeenCalledWith('1');
         });
     });
 });
