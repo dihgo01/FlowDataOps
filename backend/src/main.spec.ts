@@ -39,7 +39,7 @@ describe('Main', () => {
     it('should start the server on port 3333', async () => {
         await request(app.getHttpServer())
             .get('/')
-            .expect(404); // Assuming no route is defined, it should return 404
+            .expect(404);
     });
 
     afterAll(async () => {

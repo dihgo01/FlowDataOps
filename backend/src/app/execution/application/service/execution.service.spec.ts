@@ -6,6 +6,7 @@ import { CreateExecutionDto } from '../../presenter/dto/create-execution.dto';
 import { ExecutionFlow } from '../entities/executions.entity';
 import { UpdateExecutionDto } from '../../presenter/dto/update-execution.dto';
 import { Flow } from 'src/app/flow/application/entities/flow.entity';
+import { KafkaService } from 'src/queue/kafka/application/service/kafka.service';
 
 describe('ExecutionService', () => {
   let service: ExecutionService;
@@ -26,6 +27,13 @@ describe('ExecutionService', () => {
             remove: jest.fn(),
           },
         },
+        KafkaService,
+        {
+          provide: 'IKafkaConnection',
+          useValue: {
+            sendMessages: jest.fn(),
+          },
+        }
       ],
     }).compile();
 

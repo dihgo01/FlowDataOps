@@ -6,7 +6,6 @@ import { ExecutionFlowORMEntity } from '../entities/execution-typeorm.entity';
 import { FlowORMEntity } from '../../../../flow/infrastructure/typeorm/entities/flow-typeorm.entity';
 import { UpdateExecutionDto } from '../../../presenter/dto/update-execution.dto';
 import { PaginationPresenter } from 'src/shared/pagination/pagination.presenter';
-import { ExecutionFlow } from 'src/app/execution/application/entities/executions.entity';
 import { Flow } from 'src/app/flow/application/entities/flow.entity';
 
 describe('ExecutionRepository', () => {
@@ -40,15 +39,16 @@ describe('ExecutionRepository', () => {
 
     describe('create', () => {
         it('should create a new execution', async () => {
-            const executionData: ExecutionFlow = { 
-                id: '1', 
-                flow: { id: '1', flowName: 'Test' } as Flow, 
-                status: 'Started', 
-                dateExecution: new Date(), 
-                createdAt: new Date(), 
-                updatedAt: new Date() 
-            } as ExecutionFlow;
-            
+            const executionData: ExecutionFlowORMEntity = {
+                id: '1',
+                flow: { id: '1', flowName: 'Test' } as Flow,
+                status: 'Started',
+                outputResponse: {},
+                dateExecution: new Date(),
+                createdAt: new Date(),
+                updatedAt: new Date()
+            } as ExecutionFlowORMEntity;
+
             jest.spyOn(executionRepo, 'create').mockReturnValue(executionData);
             jest.spyOn(executionRepo, 'save').mockResolvedValue(executionData);
 
@@ -61,7 +61,15 @@ describe('ExecutionRepository', () => {
 
     describe('findAll', () => {
         it('should return paginated executions', async () => {
-            const executions = [{ id: '1', name: 'Test Execution' }] as ExecutionFlowORMEntity[];
+            const executions = [{
+                id: '1',
+                flow: { id: '1', flowName: 'Test' } as Flow,
+                status: 'Started',
+                outputResponse: {},
+                dateExecution: new Date(),
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }] as ExecutionFlowORMEntity[];
             const total = 1;
             jest.spyOn(executionRepo, 'createQueryBuilder').mockReturnValue({
                 skip: jest.fn().mockReturnThis(),
@@ -82,7 +90,16 @@ describe('ExecutionRepository', () => {
 
     describe('findOne', () => {
         it('should return a single execution', async () => {
-            const execution = { id: '1', name: 'Test Execution' } as ExecutionFlowORMEntity;
+            const execution = {
+                id: '1',
+                flow: { id: '1', flowName: 'Test' } as Flow,
+                status: 'Started',
+                outputResponse: {},
+                dateExecution: new Date(),
+                createdAt: new Date(),
+                updatedAt: new Date()
+            } as ExecutionFlowORMEntity;
+
             jest.spyOn(executionRepo, 'findOne').mockResolvedValue(execution);
 
             const result = await repository.findOne('1');
@@ -93,7 +110,14 @@ describe('ExecutionRepository', () => {
 
     describe('findOneFlow', () => {
         it('should return a single flow', async () => {
-            const flow = { id: '1', name: 'Test Flow' } as FlowORMEntity;
+            const flow = {
+                id: '1',
+                flowName: 'Test',
+                description: 'Test description',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            } as FlowORMEntity;
+
             jest.spyOn(flowRepo, 'findOneOrFail').mockResolvedValue(flow);
 
             const result = await repository.findOneFlow('1');
@@ -104,9 +128,30 @@ describe('ExecutionRepository', () => {
 
     describe('update', () => {
         it('should update an execution', async () => {
-            const updateData: UpdateExecutionDto = { name: 'Updated Execution' };
-            const updatedExecution = { id: '1', name: 'Updated Execution' } as ExecutionFlowORMEntity;
-            jest.spyOn(executionRepo, 'update').mockResolvedValue(undefined);
+            const dateExecution = new Date();
+
+            const updateData: UpdateExecutionDto = {
+                status: 'Completed',
+                dateExecution: dateExecution,
+                outputResponse: JSON.stringify({})
+            };
+
+            const updatedExecution = {
+                id: '1',
+                flow: { id: '1', flowName: 'Test' } as Flow,
+                status: 'Completed',
+                outputResponse: JSON.stringify({}),
+                dateExecution: dateExecution,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            } as ExecutionFlowORMEntity;
+
+            jest.spyOn(executionRepo, 'update').mockResolvedValue({
+                raw: {},
+                affected: 1,
+                generatedMaps: [],
+            });
+            
             jest.spyOn(executionRepo, 'findOne').mockResolvedValue(updatedExecution);
 
             const result = await repository.update('1', updateData);
@@ -118,7 +163,10 @@ describe('ExecutionRepository', () => {
 
     describe('remove', () => {
         it('should remove an execution', async () => {
-            jest.spyOn(executionRepo, 'delete').mockResolvedValue(undefined);
+            jest.spyOn(executionRepo, 'delete').mockResolvedValue({
+                raw: {},
+                affected: 1,
+            });
 
             await repository.remove('1');
             expect(executionRepo.delete).toHaveBeenCalledWith('1');

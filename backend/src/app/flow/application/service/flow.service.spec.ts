@@ -5,6 +5,7 @@ import { CreateFlowDto } from '../../presenter/dto/create-flow.dto';
 import { UpdateFlowDto } from '../../presenter/dto/update-flow.dto';
 import { Flow } from '../entities/flow.entity';
 import { PaginationPresenter } from '../../../../shared/pagination/pagination.presenter';
+import { Step } from 'src/app/steps/application/entities/steps.entity';
 
 describe('FlowService', () => {
   let service: FlowService;
@@ -20,11 +21,12 @@ describe('FlowService', () => {
             create: jest.fn(),
             findAll: jest.fn(),
             findOne: jest.fn(),
-            formatSteps: jest.fn(),
+            findStepOne: jest.fn(),
             update: jest.fn(),
             remove: jest.fn(),
           },
         },
+
       ],
     }).compile();
 
@@ -39,8 +41,6 @@ describe('FlowService', () => {
   it('should create a flow', async () => {
     const createFlowDto: CreateFlowDto = { flowName: 'Test Flow', description: 'Test Description', steps: [] };
     const result = { id: '1', ...createFlowDto } as Flow;
-
-    jest.spyOn(flowRepository, 'formatSteps').mockResolvedValue([]);
 
     jest.spyOn(flowRepository, 'create').mockResolvedValue(result);
 
@@ -60,9 +60,8 @@ describe('FlowService', () => {
     };
     const result = { id: '1', ...createFlowDto } as Flow;
 
-    jest.spyOn(flowRepository, 'formatSteps').mockResolvedValue(createFlowDto.steps as any);
-
     jest.spyOn(flowRepository, 'create').mockResolvedValue(result);
+    jest.spyOn(flowRepository, 'findStepOne').mockResolvedValue({ id: '1', stepName: 'Test Step' } as Step);
 
     expect(await service.create(createFlowDto)).toEqual(result);
     expect(flowRepository.create).toHaveBeenCalledWith(createFlowDto);

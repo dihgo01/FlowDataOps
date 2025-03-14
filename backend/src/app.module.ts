@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { StepsModule } from './app/steps/steps.module';
 import { ExecutionModule } from './app/execution/execution.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { ExecutionModule } from './app/execution/execution.module';
     DatabaseModule,
     FlowModule,
     StepsModule,
-    ExecutionModule
+    ExecutionModule,
+    QueueModule
   ],
   controllers: [],
   providers: [],

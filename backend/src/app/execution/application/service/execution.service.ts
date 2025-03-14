@@ -3,12 +3,14 @@ import { IExecutionRepository } from '../repositories/execution.repository';
 import { CreateExecutionDto } from '../../presenter/dto/create-execution.dto';
 import { UpdateExecutionDto } from '../../presenter/dto/update-execution.dto';
 import { ExecutionFlow } from '../entities/executions.entity';
+import { KafkaService } from 'src/queue/kafka/application/service/kafka.service';
 
 @Injectable()
 export class ExecutionService {
   constructor(
     @Inject('IExecutionRepository')
     private readonly executionRepository: IExecutionRepository,
+    private readonly kafkaService: KafkaService,
   ) { }
 
   async create(createExecutionDto: CreateExecutionDto) {
@@ -22,7 +24,11 @@ export class ExecutionService {
       updatedAt: new Date(),
     };
 
-    return await this.executionRepository.create(createExecution);
+    const result = await this.executionRepository.create(createExecution);
+
+    await this.kafkaService.sendMessage('execution', result);
+
+    return result;
   }
 
   async findAll(page?: number, limit?: number) {
